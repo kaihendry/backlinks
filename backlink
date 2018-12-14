@@ -1,5 +1,5 @@
 #!/bin/bash
->&2 echo Backlinks $1
+>&2 echo backlink $1
 
 grep -l $(basename $1 .mdwn) *.links |
 while read link

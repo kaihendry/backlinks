@@ -1,13 +1,17 @@
 INFILES = $(shell find . -name "*.mdwn")
 OUTFILES = $(INFILES:.mdwn=.html)
+LINKFILES = $(INFILES:.mdwn=.links)
 
 all: $(OUTFILES)
 
-%.html: %.mdwn
+%.links: %.mdwn
+	./links $< > $@
+
+%.html: %.mdwn $(LINKFILES)
 	cmark $< > $@
-	./backlinks $< | cmark >> $@
+	./backlink $< | cmark >> $@
 
 clean:
-	rm -f $(OUTFILES)
+	rm -fv $(OUTFILES) $(LINKFILES)
 
 PHONY: all clean
