@@ -1,0 +1,3 @@
+# Page B
+
+Check out [Page A](pageA)
