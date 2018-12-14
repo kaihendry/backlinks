@@ -4,7 +4,7 @@ OUTFILES = $(INFILES:.mdwn=.html)
 all: $(OUTFILES)
 
 %.html: %.mdwn
-	cmark $< >> $@
+	cmark $< > $@
 	./backlinks $< | cmark >> $@
 
 clean:

@@ -1,11 +1,9 @@
 #!/bin/bash
 >&2 echo Backlinks $1
 
-echo "<hr>"
-
 grep -l $(basename $1 .mdwn) *.links |
 while read link
 do
 	page=$(basename $link .links)
-	printf "[%s](%s)\n" $page $page
+	printf "[%s](%s.html)\n" $page $page
 done
