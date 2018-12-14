@@ -1,3 +1,0 @@
-#!/bin/bash
->&2 echo links $1
-grep -o -P "\[.*?\]\(.*?\)" $1 || true

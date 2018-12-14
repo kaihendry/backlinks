@@ -1,9 +1,0 @@
-#!/bin/bash
->&2 echo backlink $1
-
-grep -l $(basename $1 .mdwn) *.links |
-while read link
-do
-	page=$(basename $link .links)
-	printf "[%s](%s.html)\n" $page $page
-done

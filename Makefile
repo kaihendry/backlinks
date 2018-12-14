@@ -1,16 +1,20 @@
 INFILES = $(shell find . -name "*.mdwn")
 OUTFILES = $(INFILES:.mdwn=.html)
+LINKFILES = $(INFILES:.mdwn=.whatlinkshere)
 
 all: $(OUTFILES)
 
-%.links: %.mdwn
-	./links $< > $@
+# These need to be all made before the HTML is processed
+$(LINKFILES): $(INFILES)
+	@echo Creating backlinks $@
+	@touch $@
+	@go run backlinks.go $<
 
-%.html: %.mdwn %.links
-	cmark $< > $@
-	./backlink $< | cmark >> $@
+%.html: %.mdwn %.whatlinkshere
+	@echo Deps $^
+	@cmark $^ > $@
 
 clean:
-	rm -fv $(OUTFILES)
+	rm -fv $(OUTFILES) $(LINKFILES)
 
 PHONY: all clean
