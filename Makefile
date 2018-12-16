@@ -7,8 +7,8 @@ all: $(OUTFILES)
 # These need to be all made before the HTML is processed
 $(LINKFILES): $(INFILES)
 	@echo Creating backlinks $@
-	@touch $@
-	@go run backlinks.go $<
+	touch $@
+	go run backlinks.go $<
 
 %.html: %.mdwn %.whatlinkshere
 	@echo Deps $^

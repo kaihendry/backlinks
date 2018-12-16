@@ -14,6 +14,11 @@ var re = regexp.MustCompile(`\[(.*?)\]\((.*?)\)`)
 
 func main() {
 	sourceFilename := os.Args[1]
+	if filepath.Ext(sourceFilename) != ".mdwn" {
+		fmt.Fprintf(os.Stderr, "source %s is not markdown\n", sourceFilename)
+		os.Exit(1)
+	}
+
 	b, err := ioutil.ReadFile(sourceFilename)
 	if err != nil {
 		panic(err)
