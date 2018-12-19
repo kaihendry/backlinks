@@ -18,6 +18,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "source %s is not markdown\n", sourceFilename)
 		os.Exit(1)
 	}
+	log.Println("Analysing", sourceFilename, "for new links")
 
 	b, err := ioutil.ReadFile(sourceFilename)
 	if err != nil {

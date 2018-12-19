@@ -2,6 +2,4 @@
 
 Check out [Page B](pageB.html) and again [Page B](pageB.html)!
 
-[Page C](pageC.html)
-
 Ok!?
