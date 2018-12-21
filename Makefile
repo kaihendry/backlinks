@@ -1,23 +1,27 @@
-INFILES     := $(shell find . -name "*.mdwn")
-OUTFILES    := $(INFILES:.mdwn=.html)
-LINKFILES   := $(INFILES:.mdwn=.whatlinkshere)
-LINKPATTERN := $(INFILES:.mdwn=.w%e)
+INFILES   := $(shell find . -name "*.mdwn")
+OUTFILES  := $(INFILES:.mdwn=.html)
+DONEFILES := $(patsubst %.mdwn,%.backlinks/.done,$(INFILES))
 
 .PHONY: all clean
-.PRECIOUS: $(LINKFILES)
 
-all: $(OUTFILES)
+ifeq ($(STEP),)
+all $(OUTFILES): $(DONEFILES)
+	$(MAKE) STEP=2 $@
 
-# These need to be all made before the HTML is processed
-$(LINKPATTERN): $(INFILES)
-	@echo Creating backlinks
-	@rm -f $(LINKFILES)
-	@touch $(LINKFILES)
-	@for m in $^; do go run backlinks.go $$m; done
-
-%.html: %.mdwn %.whatlinkshere
-	@echo Deps $^
-	@cmark $^ > $@
+%.backlinks/.done: %.mdwn
+	rm -rf $(dir $@)
+	mkdir -p $(dir $@)
+	cp $< $(dir $@)
+	cd $(dir $@); go run ../backlinks.go $<
+	touch $@
 
 clean:
-	rm -f $(LINKFILES) $(OUTFILES)
+	rm -rf *.backlinks $(OUTFILES)
+else
+all: $(OUTFILES)
+
+.SECONDEXPANSION:
+%.html: %.mdwn $$(wildcard *.backlinks/$$*.whatlinkshere)
+	@echo Deps $^
+	@cmark $^ > $@
+endif
