@@ -32,11 +32,11 @@ func main() {
 		}
 
 		target := l[2]
-		outputfile := strings.TrimSuffix(target, filepath.Ext(target)) + ".whatlinkshere"
+		outputfile := strings.TrimSuffix(target, filepath.Ext(target)) + ".bl"
 		backLinkHTML := strings.TrimSuffix(sourceFilename, filepath.Ext(sourceFilename))
 		log.Println(outputfile, backLinkHTML)
 
-		// write the backlink to $target.whatlinkshere
+		// write the backlink to $target.bl
 		f, err := os.OpenFile(outputfile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 		if err != nil {
 			panic(err)

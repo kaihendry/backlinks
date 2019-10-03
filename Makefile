@@ -1,7 +1,6 @@
 INFILES     := $(shell find . -name "*.mdwn")
 OUTFILES    := $(INFILES:.mdwn=.html)
-LINKFILES   := $(INFILES:.mdwn=.whatlinkshere)
-LINKPATTERN := $(INFILES:.mdwn=.w%e)
+LINKFILES   := $(INFILES:.mdwn=.bl)
 
 .PHONY: all clean
 .PRECIOUS: $(LINKFILES)
@@ -9,15 +8,16 @@ LINKPATTERN := $(INFILES:.mdwn=.w%e)
 all: $(OUTFILES)
 
 # These need to be all made before the HTML is processed
-$(LINKPATTERN): $(INFILES)
+%.bl: $(INFILES)
 	@echo Creating backlinks
-	@rm -f $(LINKFILES)
 	@touch $(LINKFILES)
 	@for m in $^; do go run backlinks.go $$m; done
 
-%.html: %.mdwn %.whatlinkshere
+%.html: %.mdwn %.bl
 	@echo Deps $^
 	@cmark $^ > $@
 
+test:
+
 clean:
-	rm -f $(LINKFILES) $(OUTFILES)
+	rm -f *.bl *.html
