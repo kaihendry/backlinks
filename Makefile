@@ -2,7 +2,7 @@ INFILES     := $(shell find . -name "*.mdwn")
 OUTFILES    := $(INFILES:.mdwn=.html)
 LINKFILES   := $(INFILES:.mdwn=.bl)
 
-.PHONY: all clean
+.PHONY: all clean test
 .PRECIOUS: $(LINKFILES)
 
 all: $(OUTFILES)
@@ -18,6 +18,7 @@ all: $(OUTFILES)
 	@cmark $^ > $@
 
 test:
+	@for i in *.html; do diff $$i test/$$i; done
 
 clean:
 	rm -f *.bl *.html
