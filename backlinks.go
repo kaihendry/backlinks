@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -11,6 +12,35 @@ import (
 )
 
 var re = regexp.MustCompile(`\[(.*?)\]\((.*?)\)`)
+
+func readLines(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines, scanner.Err()
+}
+
+func writeLines(lines []string, path string) error {
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	w := bufio.NewWriter(file)
+	for _, line := range lines {
+		fmt.Fprintln(w, line)
+	}
+	return w.Flush()
+}
 
 func main() {
 	sourceFilename := os.Args[1]
@@ -36,17 +66,25 @@ func main() {
 		backLinkHTML := strings.TrimSuffix(sourceFilename, filepath.Ext(sourceFilename))
 		log.Println(outputfile, backLinkHTML)
 
-		// write the backlink to $target.bl
-		f, err := os.OpenFile(outputfile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+		lines, err := readLines(outputfile)
 		if err != nil {
-			panic(err)
+			log.Printf("Initialising: %s", outputfile)
 		}
 
-		defer f.Close()
+		backlink := fmt.Sprintf("[%s](%s)", backLinkHTML, backLinkHTML+".html")
 
-		if _, err = f.WriteString(fmt.Sprintf("[%s](%s)\n", backLinkHTML, backLinkHTML+".html")); err != nil {
-			panic(err)
+		var seenbefore bool
+		for _, line := range lines {
+			if backlink == line {
+				seenbefore = true
+			}
 		}
-
+		if !seenbefore {
+			lines = append(lines, backlink)
+			log.Printf("Wrote: %s into %s", backlink, outputfile)
+			if err := writeLines(lines, outputfile); err != nil {
+				log.Fatalf("writeLines: %s", err)
+			}
+		}
 	}
 }

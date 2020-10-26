@@ -9,8 +9,7 @@ all: $(OUTFILES)
 
 # These need to be all made before the HTML is processed
 %.bl: $(INFILES)
-	@echo Creating backlinks
-	@touch $(LINKFILES)
+	@echo Creating backlinks $"
 	@for m in $^; do go run backlinks.go $$m; done
 
 %.html: %.mdwn %.bl
@@ -18,7 +17,7 @@ all: $(OUTFILES)
 	@echo Last $(lastword $^)
 	@cmark $(firstword $^) > $@
 	@echo "<h1>Backlinks</h1>" >> $@
-	@sort -u < $(lastword $^) | cmark >> $@
+	@cmark $(lastword $^) >> $@
 
 test:
 	@for i in *.html; do diff -u $$i test/$$i; done
