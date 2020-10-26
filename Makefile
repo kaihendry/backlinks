@@ -14,11 +14,14 @@ all: $(OUTFILES)
 	@for m in $^; do go run backlinks.go $$m; done
 
 %.html: %.mdwn %.bl
-	@echo Deps $^
-	@cmark $^ > $@
+	@echo First $(firstword $^)
+	@echo Last $(lastword $^)
+	@cmark $(firstword $^) > $@
+	@echo "<h1>Backlinks</h1>" >> $@
+	@sort -u < $(lastword $^) | cmark >> $@
 
 test:
-	@for i in *.html; do diff $$i test/$$i; done
+	@for i in *.html; do diff -u $$i test/$$i; done
 
 clean:
 	rm -f *.bl *.html
