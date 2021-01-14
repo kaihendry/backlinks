@@ -1,1 +1,1 @@
-rm -f *.html *.bl
+rm -rf *.html bl
