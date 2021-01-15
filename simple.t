@@ -1,32 +1,35 @@
-#!/bin/sh -e
+#!/bin/bash
 
 test_description="backlinks"
 
 . $SHARNESS_TEST_SRCDIR/sharness.sh
 
-test_expect_success "Success is reported like this" "
-    echo hello world | grep hello
-"
-
-test_expect_success "Just heello" "
-    echo hello world
-"
-
-test_expect_success "Commands are chained this way" "
-    test x = 'x' &&
-    test 2 -gt 1 &&
-    echo success
-"
+testdir=$(dirname $(pwd))
 
 test_expect_success "clean up" "
-    redo clean
+cd $testdir
+echo Test directory: $testdir
+redo clean
 "
 
-test_expect_success "pages are rendered" "
-redo clean &&
-redo all &&
-diff test/pageA.html pageA.html &&
-diff test/pageB.html pageB.html &&
+test_expect_success "pageA rendered" "
+cd $testdir
+redo clean
+redo all
+diff test/pageA.html pageA.html
+"
+
+test_expect_success "pageB rendered" "
+cd $testdir
+redo clean
+redo all
+diff test/pageB.html pageB.html
+"
+
+test_expect_success "pageC rendered" "
+cd $testdir
+redo clean
+redo all
 diff test/pageC.html pageC.html
 "
 
