@@ -3,9 +3,8 @@ cmark < $2.mdwn
 
 echo "<h1>Backlinks</h1>"
 
-ls $2.bldir | while read bl
+grep $2 *.bl | while IFS=: read -r a b
 do
-	echo $bl backlinks to $2 >&2
-	page=${bl%.*}
-	echo "[${page}](${page}.html)" | cmark
+	echo $a backlinks to $b >&2
+	echo "[${a%.*}](${a%.*}.html)" | cmark
 done

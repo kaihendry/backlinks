@@ -5,7 +5,6 @@ grep -HoP "\[(.*?)\]\((.*?)\)" $2.mdwn | while IFS=: read -r a b
 do
 	page=${b##*\(} page=${page%)*}
 	echo Backlinks $a $page 1>&2
-	mkdir -v ${page%.*}.bldir || true
-	touch ${page%.*}.bldir/${a%.*}
-	echo Added to ${page%.*}.bldir, the back link to $a
+	echo $page
 done
+echo ""
