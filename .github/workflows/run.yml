@@ -1,0 +1,22 @@
+on:
+    push:
+    workflow_dispatch:
+
+# Needed for deploying the report to Github pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  ssg:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-go@v4
+        - name: Setup Pages
+          uses: actions/configure-pages@v5
+        - name: Generate report
+          run: go run .
+        - name: Upload artifact
+          uses: actions/upload-pages-artifact@v3
+        - name: Deploy to GitHub Pages
+          uses: actions/deploy-pages@v4
