@@ -11,7 +11,7 @@ permissions:
 jobs:
   ssg:
         - uses: actions/checkout@v4
-        - uses: actions/setup-go@v4
+        - uses: actions/setup-go@v5
         - name: Setup Pages
           uses: actions/configure-pages@v5
         - name: Generate report
