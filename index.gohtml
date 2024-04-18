@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://newcss.net/lite.css">
+<title>{{ .Path }}</title>
+</head>
+<body>
+<aside>
+<h3>Links</h3>
+{{ range .Links }}
+<a href="{{ . }}">{{ . }}</a>
+{{ end }}
+<h3>Backlinks</h3>
+{{ range .Backlinks }}
+<a href="{{ . }}">{{ . }}</a>
+{{ end }}
+</aside>
+<main>
+{{ .Content }}
+</main>
+</body>
+</html>
+
