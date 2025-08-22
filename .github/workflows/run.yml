@@ -16,6 +16,6 @@ jobs:
       - uses: actions/configure-pages@v5
       - run: go test ./...
       - run: go run .
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
       - id: deployment
         uses: actions/deploy-pages@v4
